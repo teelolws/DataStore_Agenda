@@ -1,0 +1,8 @@
+package-as: DataStore_Agenda
+
+move-folders:
+ DataStore_Agenda/DataStore_Agenda: DataStore_Agenda
+
+ignore:
+ - LICENCE.md
+ - README.md
