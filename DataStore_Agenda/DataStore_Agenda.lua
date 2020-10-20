@@ -36,6 +36,8 @@ local AddonDB_Defaults = {
 				LFGDungeons = {},		-- info about LFG dungeons/raids
 				ChallengeMode = {},	-- info about mythic+
                 WorldBosses = {},
+                
+                expiredCalendar = {},
 			}
 		}
 	}
@@ -462,7 +464,23 @@ local function _HasCalendarEventExpired(character, index)
 end
 
 local function _DeleteCalendarEvent(character, index)
-	table.remove(character.Calendar, index)
+	local v = table.remove(character.Calendar, index)
+    table.insert(character.expiredCalendar, v)
+end
+
+local function _GetNumExpiredCalendarEvents(character)
+	return #character.expiredCalendar
+end
+
+local function _GetExpiredCalendarEventInfo(character, index)
+	local event = character.expiredCalendar[index]
+	if event then
+		return strsplit("|", event)		-- eventDate, eventTime, title, eventType, inviteStatus
+	end
+end
+
+local function _DeleteExpiredCalendarEvent(character, index)
+	local v = table.remove(character.expiredCalendar, index)
 end
 
 -- * Item Cooldowns *
@@ -642,6 +660,10 @@ local PublicMethods = {
 	GetCalendarEventInfo = _GetCalendarEventInfo,
 	HasCalendarEventExpired = _HasCalendarEventExpired,
 	DeleteCalendarEvent = _DeleteCalendarEvent,
+    
+    GetNumExpiredCalendarEvents = _GetNumExpiredCalendarEvents,
+    GetExpiredCalendarEventInfo = _GetExpiredCalendarEventInfo,
+    DeleteExpiredCalendarEvent = _DeleteExpiredCalendarEvent,
 
 	GetNumItemCooldowns = _GetNumItemCooldowns,
 	GetItemCooldownInfo = _GetItemCooldownInfo,
@@ -667,6 +689,10 @@ function addon:OnInitialize()
 	DataStore:SetCharacterBasedMethod("GetCalendarEventInfo")
 	DataStore:SetCharacterBasedMethod("HasCalendarEventExpired")
 	DataStore:SetCharacterBasedMethod("DeleteCalendarEvent")
+    
+    DataStore:SetCharacterBasedMethod("GetNumExpiredCalendarEvents")
+    DataStore:SetCharacterBasedMethod("GetExpiredCalendarEventInfo")
+    DataStore:SetCharacterBasedMethod("DeleteExpiredCalendarEvent")
 
 	DataStore:SetCharacterBasedMethod("GetNumItemCooldowns")
 	DataStore:SetCharacterBasedMethod("GetItemCooldownInfo")
