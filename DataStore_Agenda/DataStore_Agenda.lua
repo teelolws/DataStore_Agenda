@@ -158,6 +158,8 @@ local function ScanDungeonIDs()
             worldBosses[instanceID] = (instanceReset + time())
 		end
 	end
+    
+    addon:SendMessage("DATASTORE_DUNGEONS_SCANNED")
 end
 
 local function ScanLFGDungeon(dungeonID)
@@ -218,6 +220,8 @@ local function ScanLFGDungeons()
 	for i = 1, 3000 do  -- watch this, increase it if LfgDungeons.db2 increases past 3000
 		ScanLFGDungeon(i)
 	end
+    
+    addon:SendMessage("DATASTORE_DUNGEONS_SCANNED")
 end
 
 local function ScanCalendar()
