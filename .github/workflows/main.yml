@@ -24,5 +24,4 @@ jobs:
     - name: Create Retail Package
       run: curl -s https://raw.githubusercontent.com/teelolws/packager/master/release.sh | bash
       env:
-         CF_API_KEY: ${{ secrets.CF_API_KEY }}
          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
